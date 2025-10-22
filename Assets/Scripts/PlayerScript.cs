@@ -101,4 +101,35 @@ public class PlayerScript : MonoBehaviour
     {
         SceneManager.LoadScene("Game Over");
     }
+    
+    public class PlayerMovement : MonoBehaviour
+{
+    public float jumpForce = 5f;
+    public int maxJumps = 2;
+    private Rigidbody2D RB;
+    private int jumpsRemaining;
+
+    void Start()
+    {
+        RB = GetComponent<Rigidbody2D>();
+        jumpsRemaining = maxJumps;
+    }
+
+    void Update()
+    {
+        if (Input.GetButtonDown("Jump") && jumpsRemaining > 0)
+        {
+            RB.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            jumpsRemaining--;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            jumpsRemaining = maxJumps;
+        }
+    }
+}
 }
